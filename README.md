@@ -98,3 +98,43 @@ jobs:
         with:
           name: ${{ env.ASH_OUTPUT_PATH }}
           path: ${{ env.ASH_OUTPUT_PATH }}
+
+The workflow will execute and scan each time there is a push to the repository.
+
+Yor by Bridgecrew.io
+Description:
+Yor is an open-source tool that helps add informative and consistent tags across Infrastructure as Code (IaC) frameworks. Yor currently supports Terraform, CloudFormation, and Serverless Frameworks.
+
+Yor can run as a GitHub Action to automatically add consistent tagging logic to your IaC. It can also be used as a pre-commit hook or a standalone CLI.
+
+For more information, visit: Yor GitHub Repository
+
+Deploying Yor Workflow
+Create a new workflow under Actions in your repository.
+Rename the file to Yor GitHub Action.yaml. Leave the directory as is.
+Paste the following code into the file:
+
+name: Yor GitHub Action
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  yor-job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Run yor action
+        uses: bridgecrewio/yor-action@0.3.0
+The branch can be changed to reflect the branch where resources need tagging.
+Tags can be customized by adding the following snippet to the workflow file (GitHub tagging used as an example):
+
+      tag: git_modifiers,git_commit,git_repository,yor_trace
+      tag_groups: git,code2cloud
+      custom_tags: path/to/plugin.so
+      output_format: json
